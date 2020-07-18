@@ -255,7 +255,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 }
 ```
 
-## DELETE /actors/id
+## DELETE /movies/id
 - Delete an existing movie
 - If the movie doesn't exist you will get **Not Found Request**
 - Example: `curl -X DELETE http://127.0.0.1:5000/movies/1`
