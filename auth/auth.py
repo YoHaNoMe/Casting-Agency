@@ -1,12 +1,17 @@
+import os
 import json
 from flask import request, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+from dotenv import load_dotenv
 
-AUTH0_DOMAIN = 'dev-0qli2zso.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'capstone'
+# Load Environments
+load_dotenv()
+
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+ALGORITHMS = [os.getenv('ALGORITHMS')]
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 # AuthError Exception
 '''
@@ -80,7 +85,6 @@ def check_permissions(permission, payload):
             'description':
             'no permissions or no payload, check that you have permission'
         }, 401)
-    # print(payload)
     permissions = payload['permissions']
     if permission not in permissions:
         raise AuthError({
@@ -168,11 +172,11 @@ def requires_auth(permission=''):
         @wraps(f)
         def wrapper(*args, **kwargs):
             try:
-                token = get_token_auth_header()
-                payload = verify_decode_jwt(token)
-                check_permissions(permission, payload)
+                if int(os.getenv('AUTH_STATUS')):
+                    token = get_token_auth_header()
+                    payload = verify_decode_jwt(token)
+                    check_permissions(permission, payload)
             except AuthError as e:
-                print(e)
                 abort(401)
             return f(*args, **kwargs)
 

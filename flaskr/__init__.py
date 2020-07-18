@@ -72,7 +72,6 @@ def create_app(test_config=None):
                 'actor_id': actor.id,
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
@@ -88,7 +87,6 @@ def create_app(test_config=None):
                 'actor_id': actor.id,
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     @app.route('/actors/<int:actor_id>', methods=['PATCH'])
@@ -142,7 +140,6 @@ def create_app(test_config=None):
                 'status_code': 200,
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     '''
@@ -200,7 +197,6 @@ def create_app(test_config=None):
         try:
             datetime_obj = datetime.datetime(year, month, day)
         except Exception as e:
-            print(e)
             abort(400)
 
         # Create movie object
@@ -214,7 +210,6 @@ def create_app(test_config=None):
                 'status_code': 201
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
@@ -230,7 +225,6 @@ def create_app(test_config=None):
                 'status_code': 200
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['PATCH'])
@@ -262,7 +256,6 @@ def create_app(test_config=None):
             movie.release_date = datetime.datetime(year, month, day) if(
                 release_date) else movie.release_date
         except Exception as e:
-            print(e)
             abort(400)
 
         try:
@@ -273,7 +266,6 @@ def create_app(test_config=None):
                 'status_code': 200,
             })
         except Exception as e:
-            print(e)
             abort(422)
 
     def get_error_msg(status_code, msg):
