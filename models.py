@@ -39,6 +39,16 @@ def setup_db(app, path=''):
         set_key('.env', "TEST_GENDER_CREATED", "1")
 
 
+# Casting table | Movie => Casting <= Actor
+casting = db.Table(
+    'casting',
+    db.Column(
+        'movie_id', db.Integer, db.ForeignKey('movies.id'), primary_key=True),
+    db.Column(
+        'actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True)
+)
+
+
 # Movie
 class Movie(db.Model):
     __tablename__ = 'movies'
@@ -46,6 +56,12 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False, unique=True)
     release_date = db.Column(db.DateTime, nullable=False)
+    actors = db.relationship(
+        'Actor',
+        secondary="casting",
+        # lazy=True,
+        # backref=db.backref('movies', lazy=True)
+    )
 
     def __init__(self, title, release_date):
         self.title = title
@@ -55,7 +71,16 @@ class Movie(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def insert_actors(self, actors):
+        self.actors.extend(actors)
+        db.session.commit()
+
     def update(self):
+        db.session.commit()
+
+    def update_actors(self, actors):
+        self.actors.clear()
+        self.actors.extend(actors)
         db.session.commit()
 
     def delete(self):
@@ -66,7 +91,8 @@ class Movie(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'release_date': self.release_date.strftime("%d/%m/%Y")
+            'release_date': self.release_date.strftime("%d/%m/%Y"),
+            'actors': [actor.name for actor in self.actors]
         }
 
 
@@ -79,6 +105,10 @@ class Actor(db.Model):
     age = db.Column(db.Integer, nullable=False)
     gender_id = db.Column(
         db.Integer, db.ForeignKey('gender.id'), nullable=False)
+    movies = db.relationship(
+        "Movie",
+        secondary="casting"
+    )
 
     def __init__(self, name, age):
         self.name = name
@@ -100,7 +130,8 @@ class Actor(db.Model):
             'id': self.id,
             'name': self.name,
             'age': self.age,
-            'gender': self.gender.gender
+            'gender': self.gender.gender,
+            'movies': [movie.title for movie in self.movies]
         }
 
 

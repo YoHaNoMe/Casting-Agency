@@ -34,11 +34,22 @@ def create_app(test_config=None):
     @app.route('/actors', methods=['POST'])
     @requires_auth(permission='post:actors')
     def add_actor():
+
+        # Check that there is request
+        if not request.get_json():
+            abort(400)
+
+        # Check if name, age and gender exist
+        if ('name' not in request.get_json()) or (
+                'age' not in request.get_json()) or (
+                    'gender' not in request.get_json()):
+            abort(400)
+
         name = request.get_json()['name']
         age = request.get_json()['age']
         gender = request.get_json()['gender']
 
-        # Check that there is name, age and gender in the request
+        # Check that name, age and gender data types are correct
         if not (name and age and gender) or not (
                 isinstance(name, str)
                 and isinstance(age, int)
@@ -72,6 +83,7 @@ def create_app(test_config=None):
                 'actor_id': actor.id,
             })
         except Exception as e:
+            print(e)
             abort(422)
 
     @app.route('/actors/<int:actor_id>', methods=['DELETE'])
@@ -180,16 +192,36 @@ def create_app(test_config=None):
     @requires_auth(permission='post:movies')
     def add_movie():
 
+        # Check that there is request
+        if not request.get_json():
+            abort(400)
+
         # Check if title and release_date exists
         if ('title' not in request.get_json()) or (
-                'release_date' not in request.get_json()):
+                'release_date' not in request.get_json()) or (
+                    'actors' not in request.get_json()):
             abort(400)
 
         title = request.get_json()['title']
         release_date = request.get_json()['release_date']
+        actors = request.get_json()['actors']
 
         # Check the data type
-        if not (isinstance(title, str) and isinstance(release_date, str)):
+        if not (isinstance(title, str)
+           and isinstance(release_date, str)
+           and isinstance(actors, list)):
+            abort(400)
+
+        # Setup actors objects
+        actors_obj = [
+            Actor.query.get(actor)
+            for actor in actors
+            if Actor.query.get(actor) is not None
+        ]
+        print(actors_obj)
+
+        # Check that there is at least one actor exists
+        if not actors_obj:
             abort(400)
 
         # Convert datetime to datetime object | Global format: d/m/y
@@ -206,12 +238,14 @@ def create_app(test_config=None):
 
         try:
             movie.insert()
+            movie.insert_actors(actors_obj)
             return jsonify({
                 'movie_id': movie.id,
                 'success': True,
                 'status_code': 201
             })
         except Exception as e:
+            print(e)
             abort(422)
 
     @app.route('/movies/<int:movie_id>', methods=['DELETE'])
@@ -243,10 +277,12 @@ def create_app(test_config=None):
         title = my_request['title'] if 'title' in my_request else ''
         release_date = my_request['release_date'] if(
             'release_date' in my_request) else ''
+        actors = my_request['actors'] if 'actors' in my_request else []
 
         # Check that the data type is correct
         if (title and not isinstance(title, str)) or (
-                release_date and not isinstance(release_date, str)
+                release_date and not isinstance(release_date, str) or (
+                    actors and not isinstance(actors, list))
                 ):
             abort(400)
 
@@ -265,6 +301,14 @@ def create_app(test_config=None):
 
         try:
             movie.update()
+            # Update Actors
+            if actors:
+                actors_obj = [
+                    Actor.query.get(actor)
+                    for actor in actors
+                    if Actor.query.get(actor) is not None
+                ]
+                movie.update_actors(actors_obj)
             return jsonify({
                 'movie': movie.format(),
                 'success': True,

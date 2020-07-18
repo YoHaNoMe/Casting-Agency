@@ -1,5 +1,5 @@
 # Capstone Full Stack API
-
+The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies.
 ## Getting Started
 ***Please Note that all the below steps are for running the Application locally***. You could completely ignore all the below steps and using `https://yussefcapstoneudacity.herokuapp.com/` domain with the specified Endpoint that you want.
 
@@ -65,42 +65,20 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
       "age": 50,
       "gender": "male",
       "id": 4,
-      "name": "User 1"
+      "movies": ["Movie name"],
+      "name": "Actor 1"
     },
     {
       "age": 50,
       "gender": "male",
       "id": 5,
-      "name": "User 2"
+      "movies": [],
+      "name": "Actor 2"
     },
-    {
-      "age": 50,
-      "gender": "male",
-      "id": 6,
-      "name": "User 3"
-    },
-    {
-      "age": 40,
-      "gender": "female",
-      "id": 7,
-      "name": "User 4"
-    },
-    {
-      "age": 40,
-      "gender": "female",
-      "id": 8,
-      "name": "User 5"
-    },
-    {
-      "age": 40,
-      "gender": "female",
-      "id": 9,
-      "name": "User 6"
-    }
   ],
   "status_code": 200,
   "success": true,
-  "total_actors": 6
+  "total_actors": 2
 }
 ```
 ## POST /actors
@@ -108,9 +86,9 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - In the request *Body* You have to specify:
 ```
 {
-    "name": "The name of the user",
+    "name": "The name of the actor",
     "age": 40,
-    "gender": "the gender of the user (male / female)"
+    "gender": "the gender of the actor (male / female)"
 }
 ```
 
@@ -131,9 +109,9 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - In the request *Body* You have to specify at **least** on of the following:
 ```
 {
-    "name": "The updated name of the user",
+    "name": "The updated name of the actor",
     "age": 40,
-    "gender": "the updated gender of the user (male / female)"
+    "gender": "the updated gender of the actor (male / female)"
 }
 ```
 - If you didn't specify any of the fields you will get **Bad Request**
@@ -145,7 +123,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
     "age": 40,
     "gender": "female",
     "id": 3,
-    "name": "User 7 Updated"
+    "name": "Actor 7 Updated"
   },
   "status_code": 200,
   "success": true
@@ -174,37 +152,19 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
     {
       "id": 1,
       "release_date": "04/07/2015",
+      "actors": ["Actor name1", "Actor name2", "Actor name3"],
       "title": "Test 1"
     },
     {
       "id": 4,
       "release_date": "12/02/2017",
+      "actors": [],
       "title": "Test 2"
     },
-    {
-      "id": 7,
-      "release_date": "30/08/2018",
-      "title": "Test 3"
-    },
-    {
-      "id": 8,
-      "release_date": "12/07/2019",
-      "title": "Test 4"
-    },
-    {
-      "id": 9,
-      "release_date": "12/07/2019",
-      "title": "Test 5"
-    },
-    {
-      "id": 11,
-      "release_date": "12/07/2019",
-      "title": "Test 6"
-    }
   ],
   "status_code": 200,
   "success": true,
-  "total_movies": 6
+  "total_movies": 2
 }
 ```
 
@@ -214,14 +174,15 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 ```
 {
     "title": "The name of the movie",
-    "release_date": "12/2/2019"
+    "release_date": "12/2/2019",
+    "actors": [int]
 }
 ```
 
-- If you miss any of the (title, release_date) you will get **Bad Request**
-- If you miss any type of the (title, release_date) you will get **Bad Request**
+- If you miss any of the (title, release_date, actors) you will get **Bad Request**
+- If you miss any type of the (title, release_date, actors) you will get **Bad Request**
 - If you write wrong date you will get **Bad Request**
-- Example: ``` curl -X POST -H "Content-Type: application/json" -d '{"title": "Fast & Furious", "release_date": "12/2/2019"}' http://127.0.0.1:5000/movies ```
+- Example: ``` curl -X POST -H "Content-Type: application/json" -d '{"title": "Fast & Furious", "release_date": "12/2/2019", "actors": [1,2,3]}' http://127.0.0.1:5000/movies ```
 
 ```
 {
@@ -237,7 +198,8 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 ```
 {
     "title": "The updated name of the title",
-    "release_date": "12/2/2019"
+    "release_date": "12/2/2019",
+    "actors": [int]
 }
 ```
 - If you didn't specify any of the fields you will get **Bad Request**
@@ -248,6 +210,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
   "movie": {
     "id": 12,
     "release_date": "12/02/2019",
+    "actors": [1,2]
     "title": "Movie Updated"
   },
   "status_code": 200,
