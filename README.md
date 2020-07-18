@@ -118,6 +118,14 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - If you miss any type of the (name, age, gender) you will get **Bad Request**
 - Example: ``` curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 50, "gender": "male"}' http://127.0.0.1:5000/actors ```
 
+```
+{
+  "actor_id": 1,
+  "status_code": 201,
+  "success": true
+}
+```
+
 ## UPDATE /actors/id
 - Update an existing actor
 - In the request *Body* You have to specify at **least** on of the following:
@@ -131,10 +139,31 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - If you didn't specify any of the fields you will get **Bad Request**
 - Example: ``` curl -X PATCH -H "Content-Type: application/json" -d '{"name": "John Doe", "age": 50, "gender": "male"}' http://127.0.0.1:5000/actors/1 ```
 
+```
+{
+  "actor": {
+    "age": 40,
+    "gender": "female",
+    "id": 3,
+    "name": "User 7 Updated"
+  },
+  "status_code": 200,
+  "success": true
+}
+```
+
 ## DELETE /actors/id
 - Delete an existing actor
 - If the actor doesn't exist you will get **Not Found Request**
 - Example: `curl -X DELETE http://127.0.0.1:5000/actors/1`
+
+```
+{
+  "actor_id": 3,
+  "status_code": 200,
+  "success": true
+}
+```
 
 ## GET /movies
 - Get all movies
@@ -194,6 +223,14 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - If you write wrong date you will get **Bad Request**
 - Example: ``` curl -X POST -H "Content-Type: application/json" -d '{"title": "Fast & Furious", "release_date": "12/2/2019"}' http://127.0.0.1:5000/movies ```
 
+```
+{
+  "movie_id": 12,
+  "status_code": 201,
+  "success": true
+}
+```
+
 ## UPDATE /movies/id
 - Update an existing movie
 - In the request *Body* You have to specify at **least** on of the following:
@@ -206,11 +243,30 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - If you didn't specify any of the fields you will get **Bad Request**
 - Example: ``` curl -X PATCH -H "Content-Type: application/json" -d '{"title": "Fast & Furious 7", "release_date": "12/2/2019"}' http://127.0.0.1:5000/movies/1 ```
 
+```
+{
+  "movie": {
+    "id": 12,
+    "release_date": "12/02/2019",
+    "title": "Movie Updated"
+  },
+  "status_code": 200,
+  "success": true
+}
+```
+
 ## DELETE /actors/id
 - Delete an existing movie
 - If the movie doesn't exist you will get **Not Found Request**
 - Example: `curl -X DELETE http://127.0.0.1:5000/movies/1`
 
+```
+{
+  "movie_id": 12,
+  "status_code": 200,
+  "success": true
+}
+```
 
 ## Error Handling
 ```
@@ -221,9 +277,9 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 }
 ```
 - 400: Bad Request
+- 401: Unauthorized
 - 404: Not Found
-- 422: Not Processable
-- 401: Not Authorized
+- 422: Unprocessable
 
 
 ## Testing

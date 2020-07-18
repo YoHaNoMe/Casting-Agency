@@ -115,22 +115,24 @@ def create_app(test_config=None):
         actor.name = name.strip() if name else actor.name
         actor.age = age if age != 0 else actor.age
 
-        # Get the new gender | if there is a new one
-        actor_gender_new = Gender.query.filter_by(
-            gender=gender.replace(' ', '').lower()
-            ).first()
+        # Check if there is gender
+        if gender:
+            # Get the new gender | if there is a new one
+            actor_gender_new = Gender.query.filter_by(
+                gender=gender.replace(' ', '').lower()
+                ).first()
 
-        # Check if the gender passed from user is right
-        if not actor_gender_new:
-            abort(400)
+            # Check if the gender passed from user is right
+            if not actor_gender_new:
+                abort(400)
 
-        # Get the old gender
-        actor_gender_old = Gender.query.get(actor.gender_id)
+            # Get the old gender
+            actor_gender_old = Gender.query.get(actor.gender_id)
 
-        # Check that new Actor gender is differrent than the old Actor gender
-        if actor_gender_new.gender != actor_gender_old.gender:
-            # Add the actor to the new gender
-            actor_gender_new.actors.append(actor)
+            # Check that new Actor gender differrent than the old Actor gender
+            if actor_gender_new.gender != actor_gender_old.gender:
+                # Add the actor to the new gender
+                actor_gender_new.actors.append(actor)
 
         try:
             actor.update()
@@ -250,13 +252,16 @@ def create_app(test_config=None):
 
         # Update Movie data if it is exist | else assign it to the old value
         movie.title = title.strip() if title else movie.title
-        day, month, year = convert_date(release_date)
-        # Try to convert date from String to DateObject
-        try:
-            movie.release_date = datetime.datetime(year, month, day) if(
-                release_date) else movie.release_date
-        except Exception as e:
-            abort(400)
+
+        # Check if there is release_date
+        if release_date:
+            day, month, year = convert_date(release_date)
+            # Try to convert date from String to DateObject
+            try:
+                movie.release_date = datetime.datetime(year, month, day) if(
+                    release_date) else movie.release_date
+            except Exception as e:
+                abort(400)
 
         try:
             movie.update()
