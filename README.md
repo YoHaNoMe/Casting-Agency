@@ -65,7 +65,7 @@ INSERT INTO gender (gender) VALUES ('female')
 If you have any trouble creating the database, please refer to this [Article](https://www.enterprisedb.com/postgres-tutorials/how-create-postgresql-database-and-users-using-psql-and-pgadmin)
 
 ## Authentication
-You have to be authenticated if you are going to use the Endpoints. By going to this [Link](https://dev-0qli2zso.auth0.com/authorize?audience=capstone&response_type=token&client_id=0oLtaAA3ksqSRMSDHfBTy9Ph0UdDuHXg&redirect_uri=https://yussefcapstoneudacity.herokuapp.com/).
+You have to be authenticated if you are going to use the Endpoints. By going to this [Link](https://dev-0qli2zso.auth0.com/authorize?audience=capstone&response_type=token&client_id=0oLtaAA3ksqSRMSDHfBTy9Ph0UdDuHXg&redirect_uri=https://yussefcapstoneudacity.herokuapp.com/) and copy `access_token` in the `url`. Now that you have the token, include it into every request as a Bearer Token.
 If you are going to use the application locally and don't want to have Authentication, refer to the [below](https://github.com/YoHaNoMe/capstone_udacity#running-the-server) section.
 
 ## Running the server
