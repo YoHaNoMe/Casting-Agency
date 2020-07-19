@@ -64,6 +64,10 @@ INSERT INTO gender (gender) VALUES ('female')
 **Note:** You don't need The *4* and *5* steps if you are not going to test the application.
 If you have any trouble creating the database, please refer to this [Article](https://www.enterprisedb.com/postgres-tutorials/how-create-postgresql-database-and-users-using-psql-and-pgadmin)
 
+## Authentication
+You have to be authenticated if you are going to use the Endpoints. By going to this [Link](https://dev-0qli2zso.auth0.com/authorize?audience=capstone&response_type=token&client_id=0oLtaAA3ksqSRMSDHfBTy9Ph0UdDuHXg&redirect_uri=https://https://yussefcapstoneudacity.herokuapp.com/).
+If you are going to use the application locally and don't want to have Authentication, refer to the [below](https://github.com/YoHaNoMe/capstone_udacity#running-the-server) section.
+
 ## Running the server
 First **ensure** you are working using your created virtual environment.
 Also If you want to **Disable** Authentication change the `AUTH_STATUS` in `.env` file from 1 to 0.
