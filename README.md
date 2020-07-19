@@ -1,5 +1,28 @@
 # Capstone Full Stack API
 The Casting Agency models a company that is responsible for creating movies and managing and assigning actors to those movies.
+There are three main Users who can access the Endpoints:
+1. Casting Assistant
+   - **get:movies**
+   - **get:actors**
+2. Casting Director
+   - **get:movies**
+   - **get:actors**
+   - **add:actors**
+   - **delete:actors**
+   - **patch:actors**
+   - **patch:movies**
+3. Executive Producer
+   - **get:movies**
+   - **get:actors**
+   - **add:actors**
+   - **add:movies**
+   - **delete:actors**
+   - **delete:movies**
+   - **patch:actors**
+   - **patch:movies**
+
+***Important Note:*** Emails and passwords for those users are sent to the Reviewer. If you want to access them, email me.
+
 ## Getting Started
 ***Please Note that all the below steps are for running the Application locally***. You could completely ignore all the below steps and using `https://yussefcapstoneudacity.herokuapp.com/` domain with the specified Endpoint that you want.
 

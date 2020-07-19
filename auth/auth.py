@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 # Load Environments
 load_dotenv()
 
-AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
-ALGORITHMS = [os.getenv('ALGORITHMS')]
-API_AUDIENCE = os.getenv('API_AUDIENCE')
-AUTH_STATUS = int(os.getenv('AUTH_STATUS'))
-IS_PRODUCTION = int(os.getenv('ENV'))
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', '')
+ALGORITHMS = [os.getenv('ALGORITHMS', '')]
+API_AUDIENCE = os.getenv('API_AUDIENCE', '')
+AUTH_STATUS = int(os.getenv('AUTH_STATUS', 0))
+IS_PRODUCTION = int(os.getenv('ENV', 0))
 
 
 # AuthError Exception
@@ -169,7 +169,7 @@ def verify_decode_jwt(token):
 '''
 
 
-def is_authenticated():
+def is_authenticated(permission):
     token = get_token_auth_header()
     payload = verify_decode_jwt(token)
     check_permissions(permission, payload)
@@ -182,10 +182,10 @@ def requires_auth(permission=''):
             try:
                 # Always Apply Authentication when the App in production
                 if IS_PRODUCTION:
-                    is_authenticated()
+                    is_authenticated(permission)
                 # Or you have an option to disable it when development
                 elif AUTH_STATUS:
-                    is_authenticated()
+                    is_authenticated(permission)
 
             except AuthError as e:
                 abort(401)
