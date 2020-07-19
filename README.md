@@ -55,8 +55,8 @@ If you want to run the app localy, please follow the instructions:
 3. Connect to `capstone` Database and add the genders you want. For example:
 ```
 psql -d capstone
-INSERT INTO TABLE gender (gender) VALUES ('male')
-INSERT INTO TABLE gender (gender) VALUES ('female')
+INSERT INTO gender (gender) VALUES ('male')
+INSERT INTO gender (gender) VALUES ('female')
 ```
 4. Create Database called `capstone_test`. By `createdb capstone_test`
 5. Connect to `capstone_test` Database and add the genders you want. The same as Step *3*
