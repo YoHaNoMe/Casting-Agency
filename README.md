@@ -70,7 +70,9 @@ If you are going to use the application locally and don't want to have Authentic
 
 ## Running the server
 First **ensure** you are working using your created virtual environment.
-Also If you want to **Disable** Authentication change the `AUTH_STATUS` in `.env` file from 1 to 0.
+Also If you want to **Disable** Authentication change the `AUTH_STATUS` in `.env` file from *1* to *0*.
+
+*Note:* You have to restart the application every time you change the `.env` file.
 
 1. Change the `ENV` in `.env` file from 1 to 0
 
