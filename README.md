@@ -29,15 +29,25 @@ This will install all of the required packages we selected within the `requireme
 If you want to run the app localy, please follow the instructions:
 1. Make sure you have `PostgreSQL` Installed. [Download PostgreSQL](https://www.postgresql.org/download/)
 2. Create Database called `capstone`. By `createdb capstone`
-3. Create Database called `capstone_test`. By `createdb capstone_test`
-**Note:** You don't need The last step if you are not going to test the application.
+3. Connect to `capstone` Database and add the genders you want. For example:
+```
+psql -d capstone
+INSERT INTO TABLE gender (gender) VALUES ('male')
+INSERT INTO TABLE gender (gender) VALUES ('female')
+```
+4. Create Database called `capstone_test`. By `createdb capstone_test`
+5. Connect to `capstone_test` Database and add the genders you want. The same as Step *3*
+
+**Note:** You don't need The *4* and *5* steps if you are not going to test the application.
 If you have any trouble creating the database, please refer to this [Article](https://www.enterprisedb.com/postgres-tutorials/how-create-postgresql-database-and-users-using-psql-and-pgadmin)
 
 ## Running the server
 First **ensure** you are working using your created virtual environment.
 Also If you want to **Disable** Authentication change the `AUTH_STATUS` in `.env` file from 1 to 0.
 
-To run the server, execute:
+1. Change the `ENV` in `.env` file from 1 to 0
+
+2. To run the server, execute:
 
 ```bash
 export FLASK_APP=flaskr

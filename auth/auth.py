@@ -12,6 +12,9 @@ load_dotenv()
 AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
 ALGORITHMS = [os.getenv('ALGORITHMS')]
 API_AUDIENCE = os.getenv('API_AUDIENCE')
+AUTH_STATUS = int(os.getenv('AUTH_STATUS'))
+IS_PRODUCTION = int(os.getenv('ENV'))
+
 
 # AuthError Exception
 '''
@@ -29,7 +32,7 @@ class AuthError(Exception):
 # Auth Header
 
 '''
-@TODO implement get_token_auth_header() method
+get_token_auth_header() method
     it should attempt to get the header from the request
         it should raise an AuthError if no header is present
     it should attempt to split bearer and the token
@@ -67,12 +70,11 @@ def get_token_auth_header():
 
 
 '''
-@TODO implement check_permissions(permission, payload) method
+check_permissions(permission, payload) method
     @INPUTS
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'get:actors')
         payload: decoded jwt payload
     it should raise an AuthError if permissions are not included in the payload
-        !!NOTE check your RBAC settings in Auth0
     it should raise an AuthError if the requested permission string is not in
     the payload permissions array return true otherwise
 '''
@@ -95,7 +97,7 @@ def check_permissions(permission, payload):
 
 
 '''
-@TODO implement verify_decode_jwt(token) method
+verify_decode_jwt(token) method
     @INPUTS
         token: a json web token (string)
     it should be an Auth0 token with key id (kid)
@@ -155,9 +157,9 @@ def verify_decode_jwt(token):
 
 
 '''
-@TODO implement @requires_auth(permission) decorator method
+@requires_auth(permission) decorator method
     @INPUTS
-        permission: string permission (i.e. 'post:drink')
+        permission: string permission (i.e. 'post:actors')
     it should use the get_token_auth_header method to get the token
     it should use the verify_decode_jwt method to decode the jwt
     it should use the check_permissions method validate claims
@@ -167,15 +169,24 @@ def verify_decode_jwt(token):
 '''
 
 
+def is_authenticated():
+    token = get_token_auth_header()
+    payload = verify_decode_jwt(token)
+    check_permissions(permission, payload)
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
             try:
-                if int(os.getenv('AUTH_STATUS')):
-                    token = get_token_auth_header()
-                    payload = verify_decode_jwt(token)
-                    check_permissions(permission, payload)
+                # Always Apply Authentication when the App in production
+                if IS_PRODUCTION:
+                    is_authenticated()
+                # Or you have an option to disable it when development
+                elif AUTH_STATUS:
+                    is_authenticated()
+
             except AuthError as e:
                 abort(401)
             return f(*args, **kwargs)

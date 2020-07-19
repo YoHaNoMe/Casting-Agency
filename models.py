@@ -9,34 +9,25 @@ load_dotenv()
 
 db = SQLAlchemy()
 migrate = Migrate()
-dev_database_name = os.getenv("DATABASE_NAME")
+dev_database_name = os.getenv("DATABASE_NAME", "")
+prod_database_name = os.getenv("DATABASE_URL", "")
+is_production = int(os.getenv("ENV", 0))
 
 
 def setup_db(app, path=''):
-    database_path = 'postgres:///{}'.format(dev_database_name)
-    app.config['SQLALCHEMY_DATABASE_URI'] = path if path else database_path
+    # Configure which database to use, Production or Development
+    if is_production:
+        app.config['SQLALCHEMY_DATABASE_URI'] = prod_database_name
+    else:
+        database_path = 'postgres:///{}'.format(dev_database_name)
+        app.config['SQLALCHEMY_DATABASE_URI'] = path if path else database_path
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     db.app = app
     db.init_app(app)
     migrate.init_app(app, db)
     db.create_all()
-    # For development Database
-    if not int(os.getenv("GENDER_CREATED", 0)):
-        try:
-            Gender(gender='male').insert()
-            Gender(gender='female').insert()
-        except Exception as e:
-            print(e)
-        set_key('.env', "GENDER_CREATED", "1")
-
-    # For Test Database
-    if not int(os.getenv("TEST_GENDER_CREATED", 0)) and path:
-        try:
-            Gender(gender='male').insert()
-            Gender(gender='female').insert()
-        except Exception as e:
-            print(e)
-        set_key('.env', "TEST_GENDER_CREATED", "1")
 
 
 # Casting table | Movie => Casting <= Actor

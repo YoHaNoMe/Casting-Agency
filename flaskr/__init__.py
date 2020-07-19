@@ -18,6 +18,10 @@ def create_app(test_config=None):
 
     '''
 
+    @app.route('/')
+    def index():
+        return 'Hello, Reference: https://github.com/YoHaNoMe/capstone_udacity'
+
     @app.route('/actors')
     @requires_auth(permission='get:actors')
     def get_actors():
@@ -218,7 +222,6 @@ def create_app(test_config=None):
             for actor in actors
             if Actor.query.get(actor) is not None
         ]
-        print(actors_obj)
 
         # Check that there is at least one actor exists
         if not actors_obj:
